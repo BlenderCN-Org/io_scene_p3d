@@ -11,6 +11,7 @@ import bpy
 import os
 import math
 from bpy.props import StringProperty
+from bpy_extras.io_utils import ImportHelper
 
 def read_macro(filepath):
     objects = []
@@ -92,19 +93,18 @@ def import_meshes(filepath):
     for ob in objects:
         add_object(ob)
 
-class ImportP3D(bpy.types.Operator):
+class ImportP3D(bpy.types.Operator, ImportHelper):
     """Load a Move3D file ()"""
     bl_idname = "import_scene.p3d"
     bl_label = "Import P3D"
     bl_options = {'PRESET', 'UNDO'}
-
+    filename_ext = ".macro"
     filter_glob = StringProperty(
             default="*.p3d;*.macro",
             options={'HIDDEN'},
             )
-
     def execute(self, context):
-        import_meshes('/home/aboeuf/MikroKopterExperiments/Move3D/MACROS/MikroKopterQuad_robot.macro')
+        import_meshes(self.properties.filepath)
         return {'FINISHED'}
         
 def menu_func_import(self, context):
